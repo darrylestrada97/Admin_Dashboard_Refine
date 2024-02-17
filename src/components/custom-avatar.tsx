@@ -1,14 +1,15 @@
 import React from "react";
 import { Avatar as AntdAvatar, AvatarProps } from "antd";
+import { getNameInitials } from "@/utilities";
 
 type Props = AvatarProps & {
-  name: string;
+  name?: string;
 };
 
 const CustomAvatar = ({ name, style, ...rest }: Props) => {
   return (
     <AntdAvatar
-      alt={"Darryl Estrada"}
+      alt={name}
       size="small"
       style={{
         backgroundColor: "#87d086",
@@ -17,8 +18,12 @@ const CustomAvatar = ({ name, style, ...rest }: Props) => {
         justifyContent: "center",
         borderRadius: "50%",
         border: "1px solid #000",
+        ...style,
       }}
-    ></AntdAvatar>
+      {...rest}
+    >
+      {getNameInitials(name || "")}
+    </AntdAvatar>
   );
 };
 
