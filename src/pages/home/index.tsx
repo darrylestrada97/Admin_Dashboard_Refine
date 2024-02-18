@@ -1,4 +1,8 @@
-import { UpcomingEvents, DealsChart } from "@/components";
+import {
+  UpcomingEvents,
+  DealsChart,
+  DashboarTotalCountCard,
+} from "@/components";
 import { Col, Row } from "antd";
 import React from "react";
 
@@ -7,13 +11,25 @@ export const Home = () => {
     <div>
       <Row gutter={[32, 32]}>
         <Col xs={24} sm={24} xl={8}>
-          DashboardTotalCard
+          <DashboarTotalCountCard
+            resource="companies"
+            isLoading={isLoading}
+            totalCount={data?.data.companies.totalCount}
+          />
         </Col>
         <Col xs={24} sm={24} xl={8}>
-          DashboardTotalCard
+          <DashboarTotalCountCard
+            resource="contracts"
+            isLoading={isLoading}
+            totalCount={data?.data.contracts.totalCount}
+          />
         </Col>
         <Col xs={24} sm={24} xl={8}>
-          DashboardTotalCard
+          <DashboarTotalCountCard
+            resource="deals"
+            isLoading={isLoading}
+            totalCount={data?.data.deals.totalCount}
+          />
         </Col>
       </Row>
       <Row gutter={[32, 32]} style={{ marginTop: "32px" }}>
