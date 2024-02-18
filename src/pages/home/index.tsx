@@ -3,10 +3,20 @@ import {
   DealsChart,
   DashboarTotalCountCard,
 } from "@/components";
+import { DASHBOARD_TOTAL_COUNTS_QUERY } from "@/graphql/queries";
+import { DashboardTotalCountsQuery } from "@/graphql/types";
+import { useCustom } from "@refinedev/core";
 import { Col, Row } from "antd";
 import React from "react";
 
 export const Home = () => {
+  const { data, isLoading } = useCustom<DashboardTotalCountsQuery>({
+    url: "",
+    method: "get",
+    meta: {
+      gqlQuery: DASHBOARD_TOTAL_COUNTS_QUERY,
+    },
+  });
   return (
     <div>
       <Row gutter={[32, 32]}>
@@ -21,7 +31,7 @@ export const Home = () => {
           <DashboarTotalCountCard
             resource="contracts"
             isLoading={isLoading}
-            totalCount={data?.data.contracts.totalCount}
+            totalCount={data?.data.contacts.totalCount}
           />
         </Col>
         <Col xs={24} sm={24} xl={8}>
