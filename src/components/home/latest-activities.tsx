@@ -1,11 +1,47 @@
 import { UnorderedListOutlined } from "@ant-design/icons";
-import { Card, List } from "antd";
+import { Card, List, Space } from "antd";
 import React from "react";
 import { Text } from "../text";
 import LatestActivitiesSkeleton from "../skeleton/latest-activities";
+import {
+  DASHBOARD_LATEST_ACTIVITIES_AUDITS_QUERY,
+  DASHBOARD_LATEST_ACTIVITIES_DEALS_QUERY,
+} from "@/graphql/queries";
+import { Audit } from "@/graphql/schema.types";
+import { useList } from "@refinedev/core";
+import dayjs from "dayjs";
+import CustomAvatar from "../custom-avatar";
 
 const LatestActivities = () => {
-  const isLoading = true;
+  const isLoading = false;
+  const {
+    data: audit,
+    isLoading: isLoadingAudit,
+    isError,
+    error,
+  } = useList({
+    resource: "audits",
+    meta: {
+      gqlQuery: DASHBOARD_LATEST_ACTIVITIES_AUDITS_QUERY,
+    },
+  });
+  const dealsIds = audit?.data?.map((audit) => audit?.targetId);
+  const { data: deals, isLoading: isLoadingDeals } = useList({
+    resource: "deals",
+    queryOptions: { enabled: !!dealsIds?.length },
+    pagination: {
+      mode: "off",
+    },
+    filters: [{ field: "id", operator: "in", value: dealsIds }],
+    meta: {
+      gqlQuery: DASHBOARD_LATEST_ACTIVITIES_DEALS_QUERY,
+    },
+  });
+
+  if (isError) {
+    console.log(error);
+    return null;
+  }
   return (
     <Card
       headStyle={{ padding: "16px" }}
@@ -26,7 +62,46 @@ const LatestActivities = () => {
           renderItem={(_, i) => <LatestActivitiesSkeleton key={i} />}
         />
       ) : (
-        <List />
+        <List
+          itemLayout="horizontal"
+          dataSource={audit?.data}
+          renderItem={(item) => {
+            const deal =
+              deals?.data?.find((deal) => deal.id === String(item.targetId)) ||
+              undefined;
+            return (
+              <List.Item>
+                <List.Item.Meta
+                  title={dayjs(deal?.createdAt).format("MMM DD,YYYY - HH:MM")}
+                  avatar={
+                    <CustomAvatar
+                      shape="square"
+                      size={48}
+                      src={deal?.company.avatarUrl}
+                      name={deal?.company.name}
+                    />
+                  }
+                  description={
+                    <Space>
+                      <Text size="sm" strong style={{ color: "#000000" }}>
+                        {item.user?.name}
+                      </Text>
+                      <Text>
+                        {item.action === "CREATE" ? "created" : "moved"}
+                      </Text>
+                      <Text strong style={{ color: "#000000" }}>
+                        {deal?.title}
+                      </Text>
+                      <Text>deal</Text>
+                      <Text>{item.action === "CREATE" ? "in" : "to"}</Text>
+                      <Text strong>{deal?.stage?.title}</Text>
+                    </Space>
+                  }
+                />
+              </List.Item>
+            );
+          }}
+        />
       )}
     </Card>
   );

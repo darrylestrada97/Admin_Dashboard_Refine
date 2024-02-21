@@ -16,8 +16,8 @@ const CustomAvatar = ({ name, style, ...rest }: Props) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: "50%",
-        border: "1px solid #000",
+        borderRadius: "10%",
+        border: "1px solid ",
         ...style,
       }}
       {...rest}
