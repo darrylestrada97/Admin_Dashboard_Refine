@@ -9,7 +9,7 @@ import { Area, AreaConfig } from "@ant-design/plots";
 type Props = {
   resource: "companies" | "contacts" | "deals";
   isLoading: boolean;
-  totalCount: number;
+  totalCount: number | undefined;
 };
 const DashboarTotalCountCard = ({ resource, isLoading, totalCount }: Props) => {
   const { primaryColor, secondaryColor, icon, title } =
