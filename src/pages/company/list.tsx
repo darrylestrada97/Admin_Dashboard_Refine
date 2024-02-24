@@ -39,7 +39,6 @@ export const CompanyList = () => {
         />
       )}
     >
-      <div>test</div>
       <Table {...tableProps} pagination={{ ...tableProps.pagination }}>
         <Table.Column
           dataIndex="name"
