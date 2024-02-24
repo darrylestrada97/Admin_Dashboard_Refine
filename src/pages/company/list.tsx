@@ -19,6 +19,8 @@ export const CompanyList = () => {
       gqlQuery: COMPANIES_LIST_QUERY,
     },
   });
+
+  console.log("filters", filters);
   return (
     <List
       breadcrumb={false}
