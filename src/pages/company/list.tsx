@@ -1,7 +1,13 @@
 import CustomAvatar from "@/components/custom-avatar";
 import { COMPANIES_LIST_QUERY } from "@/graphql/queries";
 import { SearchOutlined } from "@ant-design/icons";
-import { CreateButton, FilterDropdown, List } from "@refinedev/antd";
+import {
+  CreateButton,
+  DeleteButton,
+  EditButton,
+  FilterDropdown,
+  List,
+} from "@refinedev/antd";
 import { useTable } from "@refinedev/antd";
 import { getDefaultFilter, useGo } from "@refinedev/core";
 import { Input, Space, Table } from "antd";
@@ -45,6 +51,11 @@ export const CompanyList = () => {
     >
       <Table {...tableProps} pagination={{ ...tableProps.pagination }}>
         <Table.Column<Company>
+          dataIndex="id"
+          title="ID"
+          render={(value) => <Text>{value}</Text>}
+        />
+        <Table.Column<Company>
           dataIndex="name"
           title="Company Title"
           defaultFilteredValue={getDefaultFilter("id", filters)}
@@ -72,6 +83,16 @@ export const CompanyList = () => {
             <Text>
               {currencyNumber(company?.dealsAggregate?.[0].sum?.value || 0)}
             </Text>
+          )}
+        />
+        <Table.Column<Company>
+          dataIndex="id"
+          title="Action"
+          render={(value) => (
+            <Space>
+              <EditButton hideText size="small" recordItemId={value} />
+              <DeleteButton hideText size="small" recordItemId={value} />
+            </Space>
           )}
         />
       </Table>
