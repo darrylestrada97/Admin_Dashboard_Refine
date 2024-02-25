@@ -8,6 +8,7 @@ import { Input, Space, Table } from "antd";
 import { Text } from "@/components/text";
 import React from "react";
 import { Company } from "@/graphql/schema.types";
+import { currencyNumber } from "@/utilities";
 
 export const CompanyList = () => {
   const go = useGo();
@@ -64,7 +65,15 @@ export const CompanyList = () => {
             </Space>
           )}
         />
-        <Table.Column<Company> />
+        <Table.Column<Company>
+          dataIndex="totalRevenue"
+          title="Total Revenue"
+          render={(value, company) => (
+            <Text>
+              {currencyNumber(company?.dealsAggregate?.[0].sum?.value || 0)}
+            </Text>
+          )}
+        />
       </Table>
     </List>
   );
