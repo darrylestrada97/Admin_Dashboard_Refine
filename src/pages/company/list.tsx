@@ -1,6 +1,6 @@
 import CustomAvatar from "@/components/custom-avatar";
 import { COMPANIES_LIST_QUERY } from "@/graphql/queries";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, SortAscendingOutlined } from "@ant-design/icons";
 import {
   CreateButton,
   DeleteButton,
@@ -20,15 +20,35 @@ export const CompanyList = () => {
   const go = useGo();
   const { tableProps, filters } = useTable({
     resource: "companies",
+    onSearch: (value) => {
+      return [
+        {
+          field: "name",
+          operator: "contains",
+          value: value.name,
+        },
+      ];
+    },
     pagination: {
       pageSize: 10,
+    },
+    sorters: {
+      initial: [{ field: "createdAt", order: "desc" }],
+    },
+    filters: {
+      initial: [
+        {
+          field: "name",
+          operator: "contains",
+          value: undefined,
+        },
+      ],
     },
     meta: {
       gqlQuery: COMPANIES_LIST_QUERY,
     },
   });
 
-  console.log("filters", filters);
   return (
     <List
       breadcrumb={false}
