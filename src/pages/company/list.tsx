@@ -20,7 +20,7 @@ export const CompanyList = () => {
   const go = useGo();
   const { tableProps, filters } = useTable({
     resource: "companies",
-    onSearch: (value) => {
+    onSearch: (value: Company) => {
       return [
         {
           field: "name",
