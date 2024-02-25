@@ -7,6 +7,7 @@ import { getDefaultFilter, useGo } from "@refinedev/core";
 import { Input, Space, Table } from "antd";
 import { Text } from "@/components/text";
 import React from "react";
+import { Company } from "@/graphql/schema.types";
 
 export const CompanyList = () => {
   const go = useGo();
@@ -42,19 +43,14 @@ export const CompanyList = () => {
       )}
     >
       <Table {...tableProps} pagination={{ ...tableProps.pagination }}>
-        <Table.Column
+        <Table.Column<Company>
           dataIndex="name"
           title="Company Title"
           defaultFilteredValue={getDefaultFilter("id", filters)}
           filterIcon={<SearchOutlined />}
           filterDropdown={(props) => (
             <FilterDropdown {...props}>
-              <Input
-                placeholder="Search Company Title"
-                onPressEnter={(e) => {
-                  props.confirm({ closeDropdown: false });
-                }}
-              />
+              <Input placeholder="Search Company Title" />
             </FilterDropdown>
           )}
           render={(value, record) => (
@@ -68,6 +64,7 @@ export const CompanyList = () => {
             </Space>
           )}
         />
+        <Table.Column<Company> />
       </Table>
     </List>
   );
