@@ -1,8 +1,9 @@
 import React from "react";
 import { CompanyList } from "./list";
-import { Modal } from "antd";
+import { Form, Input, Modal } from "antd";
 import { useModalForm } from "@refinedev/antd";
 import { useGo } from "@refinedev/core";
+import { CREATE_COMPANY_MUTATION } from "@/graphql/mutations";
 
 export const Create = () => {
   const go = useGo();
@@ -24,11 +25,30 @@ export const Create = () => {
     resource: "companies",
     redirect: false,
     mutationMode: "pessimistic",
-    onMutationSuccess: () => {},
+    onMutationSuccess: goToListPage,
+    meta: {
+      gqlMutation: CREATE_COMPANY_MUTATION,
+    },
   });
   return (
     <CompanyList>
-      <Modal></Modal>
+      <Modal
+        {...modalProps}
+        mask={true}
+        onCancel={goToListPage}
+        title="Create Company"
+        width={800}
+      >
+        <Form {...formProps} layout="vertical">
+          <Form.Item
+            label="Company name"
+            name="name"
+            rules={[{ required: true }]}
+          >
+            <Input placeholder="Please enter a company name" />
+          </Form.Item>
+        </Form>
+      </Modal>
     </CompanyList>
   );
 };
