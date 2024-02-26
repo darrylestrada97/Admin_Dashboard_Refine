@@ -72,7 +72,7 @@ export const Create = () => {
               placeholder="Place select a sales owner"
               options={
                 queryResult?.data?.data?.map((user) => ({
-                  values: user.id,
+                  value: user.id,
                   label: (
                     <SelectOptionWithAvatar
                       name={user.name}
